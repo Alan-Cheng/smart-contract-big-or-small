@@ -59,9 +59,9 @@ import { GameResult } from '../../models/game.models';
           </div>
         </div>
 
-        <div class="result-section" *ngIf="contractService.lastGameResult()">
+        <div class="result-section">
           <h3>遊戲結果</h3>
-          <div class="result-card" [class.win]="contractService.lastGameResult()?.win" [class.lose]="!contractService.lastGameResult()?.win">
+          <div class="result-card" *ngIf="contractService.lastGameResult()" [class.win]="contractService.lastGameResult()?.win" [class.lose]="!contractService.lastGameResult()?.win">
             <div class="result-number">
               {{ contractService.lastGameResult()?.number }}
             </div>

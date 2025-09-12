@@ -242,6 +242,35 @@ export class ContractService {
   private async listenForGameResult(txHash: string, betAmount: string): Promise<void> {
     if (!this.contract) return;
     try {
+      // 方法1: 直接從交易收據中獲取事件
+      const provider = this.web3Service.getProvider();
+      if (provider) {
+        const receipt = await provider.getTransactionReceipt(txHash);
+        if (receipt && receipt.logs) {
+          // 解析事件日誌
+          for (const log of receipt.logs) {
+            try {
+              const parsedLog = this.contract.interface.parseLog({
+                topics: log.topics,
+                data: log.data
+              });
+              if (parsedLog && parsedLog.name === 'GameResult') {
+                const player = parsedLog.args['player'];
+                const win = Boolean(parsedLog.args['win']);
+                const reward = ethers.formatEther(parsedLog.args['reward']);
+                const number = Number(parsedLog.args['number']);
+                const gameResult: GameResult = { player, win, reward, number, betAmount };
+                this.lastGameResult.set(gameResult);
+                return;
+              }
+            } catch (parseError) {
+              // 忽略解析錯誤，繼續處理下一個日誌
+            }
+          }
+        }
+      }
+
+      // 方法2: 如果方法1失敗，使用 queryFilter 作為備用
       const filter = this.contract.filters['GameResult'](this.web3Service.account());
       const events = await this.contract.queryFilter(filter);
       const latestEvent = events.find(e => e.transactionHash === txHash);
