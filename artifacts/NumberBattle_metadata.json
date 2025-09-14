@@ -267,11 +267,11 @@
 			]
 		},
 		"contracts/NumberBattle.sol": {
-			"keccak256": "0x5a3cda5777439dad49a0012cb640411d3305bd4d3818e16f6d4b22dff2b0c6cf",
+			"keccak256": "0x65d80e50c01891a6ddf7c7baaa600634266df6c38ef0c02360142bc268b42c1b",
 			"license": "SEE LICENSE IN LICENSE",
 			"urls": [
-				"bzz-raw://b171999411399ac897299d5d271ae662233374ddddd8fd471cf802b56a2f3125",
-				"dweb:/ipfs/QmYU7XsRuF1bnb7PdQjfeYjDqrxxzib5DPcL19p3ZNAYPP"
+				"bzz-raw://5e44b1c57ba5a76fc7b02d48ed6cbc54f830a6dfbec12ef0060de12af0dde8f0",
+				"dweb:/ipfs/QmdZbLNyKwUQusb2NrEVtzjCiDUpb4DPqfYM7upDHTqPGQ"
 			]
 		}
 	},

@@ -58,10 +58,6 @@ contract NumberBattleNFT is NumberBattle, ERC721URIStorage {
     }
 
     // 覆寫 ERC721URIStorage 的必要函式
-    function _burn(uint256 tokenId) internal override(ERC721) {
-        super._burn(tokenId);
-    }
-
     function tokenURI(uint256 tokenId) public view override(ERC721URIStorage) returns (string memory) {
         return super.tokenURI(tokenId);
     }
