@@ -31,7 +31,7 @@ contract NumberBattle is ReentrancyGuard {
     }
 
     // 玩家下注
-    function placeBet() external payable nonReentrant notPaused {
+    function placeBet() public payable virtual nonReentrant notPaused {
         require(msg.value > 0, "Need to send MATIC to bet");
         // 限制下注金額不能超過合約餘額一半 (避免支付不出)
         require(msg.value * 2 <= address(this).balance, "Bet too large for prize pool");
