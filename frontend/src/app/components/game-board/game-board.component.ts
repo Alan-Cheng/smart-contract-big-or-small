@@ -31,6 +31,10 @@ import { GameResult } from '../../models/game.models';
           <h3>最大下注</h3>
           <p class="stat-value">{{ getMaxBet() }} MATIC</p>
         </div>
+        <div class="stat-card">
+          <h3>NFT 狀態</h3>
+          <p class="stat-value">{{ getNFTStatus() }}</p>
+        </div>
       </div>
 
       <div class="game-section">
@@ -71,6 +75,15 @@ import { GameResult } from '../../models/game.models';
               <p *ngIf="contractService.lastGameResult()?.win">
                 獎金: {{ contractService.lastGameResult()?.reward }} MATIC
               </p>
+              <div *ngIf="contractService.lastGameResult()?.win && canClaimNFT()" class="nft-claim-section">
+                <p class="nft-notice">🎉 恭喜獲勝！您可以領取專屬 NFT</p>
+                <button 
+                  class="claim-nft-btn"
+                  (click)="claimNFT()"
+                  [disabled]="!canClaimNFT() || isClaimingNFT()">
+                  {{ isClaimingNFT() ? '鑄造中...' : '領取 NFT' }}
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -357,6 +370,47 @@ import { GameResult } from '../../models/game.models';
       border: 1px solid #f5c6cb;
       font-weight: bold;
     }
+
+    .nft-claim-section {
+      margin-top: 15px;
+      padding: 15px;
+      background: #e8f5e8;
+      border-radius: 8px;
+      border: 2px solid #4CAF50;
+      text-align: center;
+    }
+
+    .nft-notice {
+      color: #2e7d32;
+      font-weight: bold;
+      margin-bottom: 10px;
+      font-size: 1.1em;
+    }
+
+    .claim-nft-btn {
+      background: linear-gradient(45deg, #FF6B6B, #4ECDC4);
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 25px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    }
+
+    .claim-nft-btn:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+    }
+
+    .claim-nft-btn:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
     
     @media (max-width: 768px) {
       .game-section {
@@ -374,6 +428,7 @@ export class GameBoardComponent implements OnInit, OnDestroy {
   public isBetting = signal(false);
   public isWithdrawing = signal(false);
   public isRefreshing = signal(false);
+  public isClaimingNFT = signal(false);
 
   constructor(
     public web3Service: Web3Service,
@@ -449,6 +504,33 @@ export class GameBoardComponent implements OnInit, OnDestroy {
       case 'success': return '✅ 交易成功';
       case 'error': return '❌ 交易失敗';
       default: return '📋 交易狀態';
+    }
+  }
+
+  // NFT 相關方法
+  getNFTStatus(): string {
+    const nftInfo = this.contractService.nftInfo();
+    if (nftInfo.hasMinted) {
+      return `已擁有 ${nftInfo.balance} 個 NFT`;
+    } else if (nftInfo.hasWon) {
+      return '可領取 NFT';
+    } else {
+      return '尚未獲勝';
+    }
+  }
+
+  canClaimNFT(): boolean {
+    return this.contractService.canClaimNFT();
+  }
+
+  async claimNFT(): Promise<void> {
+    if (!this.canClaimNFT()) return;
+    
+    this.isClaimingNFT.set(true);
+    try {
+      await this.contractService.claimNFT();
+    } finally {
+      this.isClaimingNFT.set(false);
     }
   }
 }

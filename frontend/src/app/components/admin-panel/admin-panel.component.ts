@@ -30,6 +30,11 @@ import { ContractService } from '../../services/contract.service';
           <button (click)="withdrawAll()" [disabled]="isBusy()">提取所有餘額</button>
         </div>
         <div class="row">
+          <label>NFT URI</label>
+          <input type="text" [(ngModel)]="nftURI" placeholder="輸入新的 NFT URI">
+          <button (click)="setTokenURI()" [disabled]="isBusy() || !nftURI">更新 NFT URI</button>
+        </div>
+        <div class="row">
           <button (click)="refresh()">重新整理</button>
         </div>
       </div>
@@ -48,6 +53,7 @@ import { ContractService } from '../../services/contract.service';
 export class AdminPanelComponent {
   public isBusy = signal(false);
   public depositAmount = '';
+  public nftURI = '';
 
   constructor(public contractService: ContractService) {}
 
@@ -59,5 +65,15 @@ export class AdminPanelComponent {
   async pause(): Promise<void> { this.isBusy.set(true); try { await this.contractService.pauseContract(); } finally { this.isBusy.set(false); } }
   async resume(): Promise<void> { this.isBusy.set(true); try { await this.contractService.resumeContract(); } finally { this.isBusy.set(false); } }
   async withdrawAll(): Promise<void> { this.isBusy.set(true); try { await this.contractService.withdrawAll(); } finally { this.isBusy.set(false); } }
+  async setTokenURI(): Promise<void> { 
+    if (!this.nftURI) return;
+    this.isBusy.set(true); 
+    try { 
+      await this.contractService.setTokenURI(this.nftURI);
+      this.nftURI = ''; // 清空輸入框
+    } finally { 
+      this.isBusy.set(false); 
+    } 
+  }
   async refresh(): Promise<void> { await this.contractService.updateContractInfo(); }
 }

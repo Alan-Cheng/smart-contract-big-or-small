@@ -1,0 +1,27 @@
+{
+  "name": "NumberBattle Winner NFT",
+  "description": "A commemorative NFT awarded to winners of the NumberBattle game. This NFT represents your victory in the high-stakes number guessing game.",
+  "image": "ipfs://bafybeigqobxqegomo53j2yaig6yfiqlhe2kxqoekjw7kdftme4klt7l3ti",
+  "external_url": "https://your-domain.com",
+  "attributes": [
+    {
+      "trait_type": "Game",
+      "value": "NumberBattle"
+    },
+    {
+      "trait_type": "Achievement",
+      "value": "Winner"
+    },
+    {
+      "trait_type": "Rarity",
+      "value": "Legendary"
+    },
+    {
+      "trait_type": "Collection",
+      "value": "NumberBattle Series"
+    }
+  ],
+  "background_color": "000000",
+  "animation_url": null,
+  "youtube_url": null
+}

@@ -84,7 +84,7 @@ export class Web3Service {
     if (this.provider && this.account()) {
       try {
         const balance = await this.provider.getBalance(this.account());
-        this.balance.set(ethers.formatEther(balance));
+        this.balance.set(parseFloat(ethers.formatEther(balance)).toFixed(2));
       } catch (error) {
         console.error('更新餘額失敗:', error);
       }

@@ -8,6 +8,6 @@ export const environment = {
     blockExplorerUrls: ['https://www.oklink.com/amoy']
   },
   contracts: {
-    numberBattleAddress: '0x901893bB667072D27f28Ee19Ca5581e67874CDbb'
+    numberBattleAddress: '0xB80CCFc63018d87758dAd4121c1897c152133C7C'
   }
 };
