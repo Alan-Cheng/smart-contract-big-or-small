@@ -12,7 +12,7 @@ import { GameResult } from '../../models/game.models';
   template: `
     <div class="game-board">
       <div class="game-header">
-        <h1>🎲 Number Battle</h1>
+        <h1>🎲 比大小</h1>
         <p class="game-description">
           下注 MATIC，隨機生成 1-999 的數字，大於 500 即獲勝，獎金翻倍！
         </p>
